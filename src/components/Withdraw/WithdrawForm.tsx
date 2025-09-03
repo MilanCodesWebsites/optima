@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { DollarSign, Wallet, ArrowRight } from 'lucide-react';
+import { DollarSign, Wallet, ArrowRight, Building2 } from 'lucide-react';
 import Button from '../UI/Button';
 import Input from '../UI/Input';
 
@@ -29,9 +29,10 @@ const currencies = [
 interface WithdrawFormProps {
   balance: number;
   onSubmit: (data: any) => void;
+  onBankWithdraw?: () => void;
 }
 
-const WithdrawForm: React.FC<WithdrawFormProps> = ({ balance, onSubmit }) => {
+const WithdrawForm: React.FC<WithdrawFormProps> = ({ balance, onSubmit, onBankWithdraw }) => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm({
     resolver: yupResolver(withdrawSchema),
     context: { balance }
@@ -132,6 +133,21 @@ const WithdrawForm: React.FC<WithdrawFormProps> = ({ balance, onSubmit }) => {
           Continue to Fee Payment
         </Button>
       </form>
+
+      {/* Bank Withdrawal Alternative */}
+      <div className="mt-6 pt-6 border-t border-slate-700">
+        <div className="text-center">
+          <p className="text-slate-400 text-sm mb-3">Prefer traditional banking?</p>
+          <button
+            type="button"
+            onClick={onBankWithdraw}
+            className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors text-sm font-medium"
+          >
+            <Building2 className="w-4 h-4" />
+            Bank Withdrawal
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import WithdrawForm from './WithdrawForm';
+import BankWithdrawPage from './BankWithdrawPage';
 import FeeCalculator from './FeeCalculator';
 import ConfirmationScreen from './ConfirmationScreen';
 import { ArrowUpRight } from 'lucide-react';
@@ -12,6 +13,7 @@ interface WithdrawPageProps {
 const WithdrawPage: React.FC<WithdrawPageProps> = ({ balance, onWithdraw }) => {
   const [step, setStep] = useState(1);
   const [withdrawData, setWithdrawData] = useState<any>(null);
+  const [withdrawalType, setWithdrawalType] = useState<'crypto' | 'bank'>('crypto');
 
   const handleWithdrawSubmit = (data: any) => {
     setWithdrawData(data);
@@ -34,10 +36,32 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ balance, onWithdraw }) => {
     setStep(4);
   };
 
+  const handleBankWithdraw = (transaction: any) => {
+    onWithdraw(transaction);
+  };
+
   const resetFlow = () => {
     setStep(1);
     setWithdrawData(null);
+    setWithdrawalType('crypto');
   };
+
+  const handleBackToCrypto = () => {
+    setWithdrawalType('crypto');
+    setStep(1);
+    setWithdrawData(null);
+  };
+
+  // Bank withdrawal flow
+  if (withdrawalType === 'bank') {
+    return (
+      <BankWithdrawPage
+        balance={balance}
+        onWithdraw={handleBankWithdraw}
+        onBack={handleBackToCrypto}
+      />
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -53,7 +77,8 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ balance, onWithdraw }) => {
       {step === 1 && (
         <WithdrawForm 
           balance={balance} 
-          onSubmit={handleWithdrawSubmit} 
+          onSubmit={handleWithdrawSubmit}
+          onBankWithdraw={() => setWithdrawalType('bank')}
         />
       )}
 
