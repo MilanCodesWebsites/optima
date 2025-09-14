@@ -437,9 +437,8 @@ const SettingsPage: React.FC = () => {
             variant="danger" 
             className="w-full py-4 text-lg font-semibold"
             onClick={() => {
-              // This will trigger logout through the parent component
               if (confirm('Are you sure you want to sign out?')) {
-                window.location.href = '/logout';
+                window.location.href = 'https://optima-trades.com';
               }
             }}
           >

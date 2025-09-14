@@ -1,16 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, History, LogOut, X, User, Settings } from 'lucide-react';
+import { LogOut, Home, History, User, X, Settings } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBillTransfer, faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons';
 
 interface SidebarProps {
   user: any;
-  onLogout: () => void;
   onClose?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ user, onLogout, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ user, onClose }) => {
   const location = useLocation();
 
   const navigation = [
@@ -93,7 +92,11 @@ const Sidebar: React.FC<SidebarProps> = ({ user, onLogout, onClose }) => {
       {/* Logout */}
       <div className="px-4 py-6 border-t border-slate-700">
         <button
-          onClick={onLogout}
+          onClick={() => {
+            if (confirm('Are you sure you want to sign out?')) {
+              window.location.href = 'https://optima-trades.com';
+            }
+          }}
           className="flex items-center w-full px-4 py-3 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-xl transition-all duration-200"
         >
           <LogOut className="w-5 h-5 mr-3" />
