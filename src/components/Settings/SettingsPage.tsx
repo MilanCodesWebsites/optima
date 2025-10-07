@@ -11,7 +11,9 @@ import {
   Settings as SettingsIcon,
   Upload,
   X,
-  Camera
+  Camera,
+  MessageCircle,
+  ExternalLink
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import toast from 'react-hot-toast';
@@ -391,6 +393,34 @@ const SettingsPage: React.FC = () => {
                 />
                 <span className="text-sm text-slate-300">Compact Mode</span>
               </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Support Section */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <MessageCircle className="w-6 h-6 text-blue-400" />
+          <h2 className="text-xl font-semibold text-white">Support</h2>
+        </div>
+        <div className="space-y-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-medium text-white mb-1">Chat with Support</h3>
+                <p className="text-sm text-slate-400">Get instant help from our support team</p>
+              </div>
+              <a
+                href="https://widget-page.smartsupp.com/widget/360ca7a2c3e3c3164c5a835095a2eb1050af300a"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Start Chat</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
             </div>
           </div>
         </div>
