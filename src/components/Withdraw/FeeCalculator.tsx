@@ -22,13 +22,12 @@ const FeeCalculator: React.FC<FeeCalculatorProps> = ({ amount, currency, onConfi
   };
 
   const walletAddresses = {
-    BTC: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
-    ETH: '0x742d35Cc6676C2c6C91C6F29DbA5b67E5Db0C8E6',
-    SOL: 'DRpbCBMxVnDK7maPM5tGv6MvB3v1sRMC7CGHWHmB1Z2',
-    USDC: '0x742d35Cc6676C2c6C91C6F29DbA5b67E5Db0C8E6',
-    USDT: '0x742d35Cc6676C2c6C91C6F29DbA5b67E5Db0C8E6'
-  };
-
+  BTC: '135is3VweCLK9jdYb5RbYQueJQUt7FHyzW',
+  ETH: '0xaa54f3fe25a34111a99cb5868b899ab443aa62af',
+  SOL: 'D5r66qgcNBtw1XqYG3EgkB4jBVPKtXQj4dVHUzwBb7w1',
+  USDC: 'C5kY1sZgCdxDMocEwdCZwfj9WJsVaZF2sNqLqvA8HLN',
+  USDT: 'TFRZCJnuTzgYAxfFzS4wbiL6xiq5vtSoFZ'
+};
   const copyToClipboard = (text: string, currency: string) => {
     navigator.clipboard.writeText(text);
     // Toast notification would go here
