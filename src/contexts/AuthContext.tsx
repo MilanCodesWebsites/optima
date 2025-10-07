@@ -110,6 +110,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
+      // Add artificial delay of 15 seconds
+      await new Promise(resolve => setTimeout(resolve, 15000));
+      
       // First, try Supabase login
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
