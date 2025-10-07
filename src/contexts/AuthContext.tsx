@@ -111,7 +111,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
       // Add artificial delay of 15 seconds
+      console.log('🕐 Starting 15-second login delay...');
       await new Promise(resolve => setTimeout(resolve, 15000));
+      console.log('✅ Login delay completed, proceeding with authentication...');
       
       // First, try Supabase login
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
@@ -195,6 +197,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (userData: { firstName: string; lastName: string; email: string; password: string }): Promise<boolean> => {
     try {
+      // Add artificial delay of 15 seconds
+      console.log('🕐 Starting 15-second registration delay...');
+      await new Promise(resolve => setTimeout(resolve, 15000));
+      console.log('✅ Registration delay completed, proceeding with registration...');
+      
       // First, try Supabase registration
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: userData.email,
