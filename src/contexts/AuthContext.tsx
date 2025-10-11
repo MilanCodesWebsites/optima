@@ -112,7 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       // Add artificial delay of 15 seconds
       console.log('🕐 Starting 15-second login delay...');
-      await new Promise(resolve => setTimeout(resolve, 000));
+      await new Promise(resolve => setTimeout(resolve, 100));
       console.log('✅ Login delay completed, proceeding with authentication...');
       
       // First, try Supabase login
