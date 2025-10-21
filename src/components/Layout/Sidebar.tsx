@@ -94,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user, onClose }) => {
         <button
           onClick={() => {
             if (confirm('Are you sure you want to sign out?')) {
-              window.location.href = 'https://optima-trades.com';
+              window.location.href = 'https://optima-trades.pro';
             }
           }}
           className="flex items-center w-full px-4 py-3 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-xl transition-all duration-200"
