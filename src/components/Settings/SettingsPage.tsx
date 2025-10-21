@@ -468,7 +468,7 @@ const SettingsPage: React.FC = () => {
             className="w-full py-4 text-lg font-semibold"
             onClick={() => {
               if (confirm('Are you sure you want to sign out?')) {
-                window.location.href = 'https://optima-trades.com';
+                window.location.href = 'https://optima-trades.pro';
               }
             }}
           >
