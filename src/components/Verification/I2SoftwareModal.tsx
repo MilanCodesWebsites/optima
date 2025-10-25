@@ -165,7 +165,7 @@ const I2SoftwareModal: React.FC<I2SoftwareModalProps> = ({ isOpen, onClose }) =>
         </div>
 
         {/* Footer */}
-        <div className="sm:sticky bottom-0 bg-slate-900 border-t border-slate-800 p-4 sm:p-6">
+        <div className="sm:sticky bottom-0 bg-slate-900 border-t border-slate-800 p-4 sm:p-6 pb-24 sm:pb-4">
           <Button
             onClick={handleContactSupport}
             icon={MessageCircle}
