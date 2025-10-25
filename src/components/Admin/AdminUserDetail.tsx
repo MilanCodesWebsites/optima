@@ -23,6 +23,7 @@ interface User {
   balance: number;
   initialBalance: number;
   avatar?: string;
+  verificationStatus?: 'unverified' | 'pending' | 'verified';
   transactions: Transaction[];
 }
 
@@ -60,9 +61,11 @@ const transactionTypes = [
 const AdminUserDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getAllUsers, addTransaction } = useAuth();
+  const { getAllUsers, addTransaction, updateUserVerificationStatus } = useAuth();
   
   const [user, setUser] = useState<User | null>(null);
+  const [verificationStatus, setVerificationStatus] = useState<'unverified' | 'pending' | 'verified'>('unverified');
+  const [isUpdatingVerification, setIsUpdatingVerification] = useState(false);
   const [transactionForm, setTransactionForm] = useState({
     type: 'deposit' as 'profit' | 'loss' | 'deposit' | 'withdrawal',
     amount: '',
@@ -86,6 +89,7 @@ const AdminUserDetail: React.FC = () => {
         const targetUser = users.find(u => u.id === id);
         if (targetUser) {
           setUser(targetUser);
+          setVerificationStatus(targetUser.verificationStatus || 'unverified');
           console.log('✅ User data loaded from Supabase:', targetUser);
           
           // Load user transactions
@@ -145,6 +149,26 @@ const AdminUserDetail: React.FC = () => {
 
   const pnlPercentage = calculatePnL();
   const pnlAmount = user ? user.balance - user.initialBalance : 0;
+
+  const handleVerificationStatusChange = async (newStatus: 'unverified' | 'pending' | 'verified') => {
+    if (!user) return;
+    
+    setIsUpdatingVerification(true);
+    try {
+      const success = await updateUserVerificationStatus(user.id, newStatus);
+      if (success) {
+        setVerificationStatus(newStatus);
+        setUser({ ...user, verificationStatus: newStatus });
+        console.log(`✅ User verification status updated to ${newStatus}`);
+      } else {
+        console.error('Failed to update verification status');
+      }
+    } catch (error) {
+      console.error('Error updating verification status:', error);
+    } finally {
+      setIsUpdatingVerification(false);
+    }
+  };
 
   const handleTransactionSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -334,6 +358,26 @@ const AdminUserDetail: React.FC = () => {
               <div className="bg-slate-800/50 rounded-xl p-3 sm:p-4 border border-slate-700/30">
                 <p className="text-sm text-slate-400 mb-1">Total Transactions</p>
                 <p className="text-lg sm:text-xl font-semibold text-white">{userTransactions.length}</p>
+              </div>
+
+              {/* Verification Status */}
+              <div className="bg-slate-800/50 rounded-xl p-3 sm:p-4 border border-slate-700/30">
+                <p className="text-sm text-slate-400 mb-2">I~2 Verification Status</p>
+                <select
+                  value={verificationStatus}
+                  onChange={(e) => handleVerificationStatusChange(e.target.value as 'unverified' | 'pending' | 'verified')}
+                  disabled={isUpdatingVerification}
+                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-green text-sm"
+                >
+                  <option value="unverified">Unverified</option>
+                  <option value="pending">Pending</option>
+                  <option value="verified">Verified</option>
+                </select>
+                {verificationStatus === 'verified' && (
+                  <p className="text-xs text-neon-green mt-2 flex items-center gap-1">
+                    <span>✓</span> Premium Features Enabled
+                  </p>
+                )}
               </div>
             </div>
           </div>

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { TrendingUp, TrendingDown, DollarSign, Clock, CheckCircle, XCircle, AlertCircle, Quote, Target, Zap } from 'lucide-react';
 import TransactionReceiptModal from './TransactionReceiptModal';
+import VerificationInfoCard from '../Verification/VerificationInfoCard';
+import VerificationBadge from '../Verification/VerificationBadge';
 
 interface Transaction {
   id: string;
@@ -175,11 +177,17 @@ const Dashboard: React.FC = () => {
         <div className="flex items-center gap-3 sm:gap-4">
           <img src="https://otiktpyazqotihijbwhm.supabase.co/storage/v1/object/public/images/75903197-21b2-4fa6-a139-2405ad6d4ef7-Gemini_Generated_Image_wzjx3bwzjx3bwzjx.png" alt="Optima" className="h-6 sm:h-8" />
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white">Welcome back, {user.firstName || 'User'}!</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              Welcome back, {user.firstName || 'User'}!
+              {user.verificationStatus === 'verified' && <VerificationBadge size="md" />}
+            </h1>
             <p className="text-slate-400 text-sm sm:text-base">Here's what's happening with your account</p>
           </div>
         </div>
       </div>
+
+      {/* Verification Info Card - Show only for unverified users */}
+      {user.verificationStatus === 'unverified' && <VerificationInfoCard />}
 
       {/* Total Balance & P&L - Prominently Displayed */}
       <div className="bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-8">

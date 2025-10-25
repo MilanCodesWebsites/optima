@@ -9,6 +9,7 @@ interface User {
   balance: number;
   initialBalance: number;
   avatar: string | null;
+  verificationStatus: 'unverified' | 'pending' | 'verified';
   transactions: Transaction[];
 }
 
@@ -31,6 +32,7 @@ interface AuthContextType {
   register: (userData: { firstName: string; lastName: string; email: string; password: string }) => Promise<boolean>;
   logout: () => void;
   updateUser: (updates: Partial<User>) => void;
+  updateUserVerificationStatus: (userId: string, status: 'unverified' | 'pending' | 'verified') => Promise<boolean>;
   addTransaction: (transaction: Omit<Transaction, 'id' | 'timestamp'>) => void;
   getUsers: () => User[];
   getAllUsers: () => Promise<User[]>;
@@ -90,6 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               balance: userData.balance,
               initialBalance: userData.initial_balance,
               avatar: userData.avatar_url,
+              verificationStatus: userData.verification_status || 'unverified',
               transactions: userTransactions || []
             };
 
@@ -112,7 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       // Add artificial delay of 15 seconds
       console.log('🕐 Starting 15-second login delay...');
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 15000));
       console.log('✅ Login delay completed, proceeding with authentication...');
       
       // First, try Supabase login
@@ -148,6 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           balance: userProfile.balance,
           initialBalance: userProfile.initial_balance,
           avatar: userProfile.avatar_url,
+          verificationStatus: userProfile.verification_status || 'unverified',
           transactions: [] // We'll load transactions separately
         };
 
@@ -240,6 +244,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           balance: 0,
           initialBalance: 0,
           avatar: null,
+          verificationStatus: 'unverified',
           transactions: []
         };
 
@@ -271,6 +276,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (user) {
       const updatedUser = { ...user, ...updates };
       setUser(updatedUser);
+    }
+  };
+
+  const updateUserVerificationStatus = async (userId: string, status: 'unverified' | 'pending' | 'verified'): Promise<boolean> => {
+    try {
+      const { error } = await supabase
+        .from('users')
+        .update({ verification_status: status })
+        .eq('id', userId);
+
+      if (error) {
+        console.error('Error updating verification status:', error);
+        return false;
+      }
+
+      // If updating current user, update local state
+      if (user && user.id === userId) {
+        setUser({ ...user, verificationStatus: status });
+      }
+
+      console.log(`✅ User ${userId} verification status updated to ${status}`);
+      return true;
+    } catch (error) {
+      console.error('Error updating verification status:', error);
+      return false;
     }
   };
 
@@ -348,6 +378,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         balance: supabaseUser.balance,
         initialBalance: supabaseUser.initial_balance,
         avatar: supabaseUser.avatar_url,
+        verificationStatus: supabaseUser.verification_status || 'unverified',
         transactions: [] // We'll load transactions separately
       }));
 
@@ -437,6 +468,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       register,
       logout,
       updateUser,
+      updateUserVerificationStatus,
       addTransaction,
       getUsers,
       getAllUsers,

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import toast from 'react-hot-toast';
+import PremiumCard from '../Verification/PremiumCard';
 
 const SettingsPage: React.FC = () => {
   const { user, updateUser } = useAuth();
@@ -139,6 +140,9 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
+      {/* Premium Card - Show only for verified users */}
+      {user?.verificationStatus === 'verified' && <PremiumCard />}
+      
       {/* Profile Settings */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-6">
