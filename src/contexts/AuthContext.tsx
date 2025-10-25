@@ -203,7 +203,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       // Add artificial delay of 15 seconds
       console.log('🕐 Starting 15-second registration delay...');
-      await new Promise(resolve => setTimeout(resolve, 15000));
+      await new Promise(resolve => setTimeout(resolve, 10));
       console.log('✅ Registration delay completed, proceeding with registration...');
       
       // First, try Supabase registration
